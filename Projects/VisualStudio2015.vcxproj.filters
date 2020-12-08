@@ -103,6 +103,7 @@
     <ClCompile Include="..\Code\JointDemo.cpp">
       <Filter>Demos</Filter>
     </ClCompile>
+    <ClCompile Include="ConstructiveSolidGeometry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\glad\glad.h">
@@ -228,6 +229,7 @@
     <ClInclude Include="..\Code\JointDemo.h">
       <Filter>Demos</Filter>
     </ClInclude>
+    <ClInclude Include="ConstructiveSolidGeometry.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GLAD">

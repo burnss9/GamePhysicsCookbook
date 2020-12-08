@@ -12,18 +12,20 @@
 #endif
 
 void Render(const Mesh& mesh) {
+	glPolygonMode(GL_FRONT, GL_LINE);
 	glBegin(GL_TRIANGLES);
 
 	for (int i = 0; i < mesh.numTriangles; ++i) {
-		vec3 normal = Normalized(Cross(mesh.triangles[i].c - mesh.triangles[i].a, mesh.triangles[i].b - mesh.triangles[i].a));
+		vec3 normal = Normalized(Cross(mesh.triangles[i].b - mesh.triangles[i].a, mesh.triangles[i].c - mesh.triangles[i].a));
 		glNormal3fv(normal.asArray);
 
-		glVertex3fv(mesh.triangles[i].a.asArray);
-		glVertex3fv(mesh.triangles[i].b.asArray);
 		glVertex3fv(mesh.triangles[i].c.asArray);
+		glVertex3fv(mesh.triangles[i].b.asArray);
+		glVertex3fv(mesh.triangles[i].a.asArray);
 	}
 
 	glEnd();
+	glPolygonMode(GL_FRONT, GL_FILL);
 }
 
 void Render(const Model& model) {

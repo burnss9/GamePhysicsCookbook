@@ -9,14 +9,6 @@
 class CH16Demo : public DemoBase {
 protected:
 	PhysicsSystem physicsSystem;
-	Cloth cloth;
-	OBB ground;
-	std::vector<OBB> renderObjects;
-
-	int num_part;
-	float part_dist;
-	float k;
-	float d;
 
 	bool size_imgui_window;
 protected:
