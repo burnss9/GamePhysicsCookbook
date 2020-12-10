@@ -8,7 +8,9 @@
 #include "../Projects/ConstructiveSolidGeometry.h"
 
 Mesh* sphere = new Mesh();
+Mesh* movingSphere = new Mesh();
 Mesh* cube = new Mesh();
+Mesh* subtraction = new Mesh();
 
 void CH16Demo::Initialize(int width, int height) {
 	DemoBase::Initialize(width, height);
@@ -25,9 +27,9 @@ void CH16Demo::Initialize(int width, int height) {
 	camera.SetRotation(vec2(-67.9312f, 19.8f));
 
 	LoadMesh("D:\\Meshes\\sphere.obj", sphere);
+	LoadMesh("D:\\Meshes\\sphere.obj", movingSphere);
 	LoadMesh("D:\\Meshes\\cube.obj", cube);
 
-	ConstructiveSolidGeometry().RelativeComplement(sphere, cube);
 
 	ResetDemo();
 }
@@ -53,16 +55,6 @@ void CH16Demo::ResetDemo() {
 void CH16Demo::ImGUI() {
 	DemoBase::ImGUI();
 
-	if (size_imgui_window) {
-		size_imgui_window = false;
-		ImGui::SetNextWindowPos(ImVec2(400, 10));
-		ImGui::SetNextWindowSize(ImVec2(370, 75));
-	}
-
-	ImGui::Begin("CSG", 0, ImGuiWindowFlags_NoResize);
-	
-
-	ImGui::End();
 }
 
 void CH16Demo::Render() {
@@ -84,8 +76,14 @@ void CH16Demo::Render() {
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, constraintDiffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, zero);
 
-	::Render(*cube);
-	::Render(*sphere);
+	if (subtraction->triangles != nullptr) {
+		delete[] subtraction->triangles;
+		delete subtraction;
+	}
+
+	subtraction = ConstructiveSolidGeometry().RelativeComplement(cube, movingSphere);
+
+	::Render(*subtraction);
 
 	glColor3f(groundDiffuse[0], groundDiffuse[1], groundDiffuse[2]);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, groundAmbient);
@@ -99,8 +97,14 @@ void CH16Demo::Render() {
 	::Render(l);*/
 }
 
+float t = 0;
 void CH16Demo::Update(float dt) {
 	DemoBase::Update(dt);
+	t += dt;
+
+	for (int i = 0; i < sphere->numTriangles * 3; i++) {
+		movingSphere->vertices[i] = sphere->vertices[i] + Point(sinf(t / 10.0f) - 0.5, 0, 0);
+	}
 
 	physicsSystem.Update(dt);
 }

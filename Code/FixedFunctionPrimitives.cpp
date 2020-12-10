@@ -19,9 +19,9 @@ void Render(const Mesh& mesh) {
 		vec3 normal = Normalized(Cross(mesh.triangles[i].b - mesh.triangles[i].a, mesh.triangles[i].c - mesh.triangles[i].a));
 		glNormal3fv(normal.asArray);
 
-		glVertex3fv(mesh.triangles[i].c.asArray);
-		glVertex3fv(mesh.triangles[i].b.asArray);
-		glVertex3fv(mesh.triangles[i].a.asArray);
+		glVertex3fv((mesh.triangles[i].c * 10).asArray);
+		glVertex3fv((mesh.triangles[i].b * 10).asArray);
+		glVertex3fv((mesh.triangles[i].a * 10).asArray);
 	}
 
 	glEnd();
